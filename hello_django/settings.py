@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myhello',
+    
 ]
 
 MIDDLEWARE = [
@@ -131,20 +132,31 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-    'file': {
-    'level': 'DEBUG',
-    'class': 'logging.FileHandler',
-    'filename': './debug.log',
-    },
-    },
-    'loggers': {
-    'django': {
-    'handlers': ['file'],
-    'level': 'DEBUG',
-    'propagate': True,
-    },
-    },
+ 'version': 1,
+ 'disable_existing_loggers': True,
+ 'formatters': {
+ 'standard': {
+ 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'
+ }
+ },
+ 'handlers': {
+ 'debug': {
+ 'level':'DEBUG',
+ 'class':'logging.handlers.RotatingFileHandler',
+ 'filename': './debug.log',
+ 'formatter':'standard',
+ },
+ 'console':{
+ 'level': 'DEBUG',
+ 'class': 'logging.StreamHandler',
+ 'formatter': 'standard',
+ },
+ },
+ 'loggers': {
+ 'django': {
+ 'handlers': ['console','debug'],
+ 'level': 'DEBUG',
+ 'propagate': True,
+ },
+ }
 }
